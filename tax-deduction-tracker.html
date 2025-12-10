@@ -259,5 +259,28 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
+    <script>
+        // Password protection
+        (function() {
+            const correctPassword = 'DriveSmarter2025';
+            const sessionKey = 'deliveryDriverToolkitAccess';
+            
+            // Check if already authenticated in this session
+            if (sessionStorage.getItem(sessionKey) === 'true') {
+                return;
+            }
+            
+            // Prompt for password
+            const enteredPassword = prompt('Please enter the password to access this toolkit:');
+            
+            if (enteredPassword === correctPassword) {
+                sessionStorage.setItem(sessionKey, 'true');
+            } else {
+                alert('Incorrect password. Access denied.');
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;"><h1>Access Denied</h1><p>Incorrect password.</p></div>';
+            }
+        })();
+    </script>
+
 </body>
 </html>
