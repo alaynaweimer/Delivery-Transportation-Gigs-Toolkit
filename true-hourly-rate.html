@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>True Hourly Rate Calculator | Delivery Driver Income Optimizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .brand {
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        .nav-links {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e0e0e0;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            border-color: #F4A261;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            border-color: #F4A261;
+            color: #2c3e50;
+        }
+
+        .tab-icon {
+            font-size: 1.3em;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .intro-text {
+            font-size: 1.15em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .help-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .results-section {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 35px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: white;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .result-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .result-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 15px 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-card.gross {
+            border-color: #95a5a6;
+        }
+
+        .comparison-card.net {
+            border-color: #e74c3c;
+        }
+
+        .comparison-label {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .comparison-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .comparison-card.gross .comparison-value {
+            color: #95a5a6;
+        }
+
+        .comparison-card.net .comparison-value {
+            color: #e74c3c;
+        }
+
+        .result-breakdown {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .breakdown-value {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            color: #2c3e50;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(244, 162, 97, 0.3);
+        }
+
+        .recommendation-box h4 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .recommendation-box li {
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .warning-box strong {
+            color: #856404;
+        }
+
+        .learn-content {
+            line-height: 1.8;
+        }
+
+        .learn-content h3 {
+            color: #667eea;
+            font-size: 1.6em;
+            margin: 30px 0 20px 0;
+        }
+
+        .learn-content h4 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+
+        .learn-content p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .learn-content ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        .learn-content li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 True Hourly Rate Calculator</h1>
+        </div>
+
+        <div class="brand">
+            Discover Your Success with Alayna Marie
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+        <div class="content">
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('calculator')">
+                    <span class="tab-icon">🧮</span>
+                    <span>Calculator</span>
+                </button>
+                <button class="tab-btn" id="resultsTabBtn" onclick="switchTab('results')" style="display: none;">
+                    <span class="tab-icon">📊</span>
+                    <span>Results</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('learn')">
+                    <span class="tab-icon">📚</span>
+                    <span>Learn</span>
+                </button>
+            </div>
+
+            <!-- CALCULATOR TAB -->
+            <div id="calculatorTab" class="tab-content active">
+                <p class="intro-text">
+                    <strong>Most drivers think they make $20-25/hour.</strong> The reality? After gas, vehicle wear, taxes, and hidden costs, many make $8-12/hour. Calculate your TRUE hourly rate in 2 minutes.
+                </p>
+
+                <div class="form-section">
+                    <h3>📱 Your App Earnings</h3>
+
+                    <div class="form-group">
+                        <label for="grossEarnings">Gross Earnings (What the App Shows) *</label>
+                        <input type="number" id="grossEarnings" placeholder="e.g., 500" min="0" step="10">
+                        <p class="help-text">Total earnings for a typical week (or enter daily and we'll calculate weekly)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timePeriod">Time Period</label>
+                        <select id="timePeriod">
+                            <option value="week">Per Week</option>
+                            <option value="day">Per Day</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activeHours">Active Hours Worked *</label>
+                        <input type="number" id="activeHours" placeholder="e.g., 25" min="0" step="0.5">
+                        <p class="help-text">Hours you're actively delivering/driving for the same time period</p>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>🚗 Vehicle Costs</h3>
+
+                    <div class="form-group">
+                        <label for="milesPerWeek">Miles Driven per Week *</label>
+                        <input type="number" id="milesPerWeek" placeholder="e.g., 300" min="0" step="10">
+                        <p class="help-text">Total miles driven while working (include to/from pickups)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicleMPG">Vehicle MPG</label>
+                        <input type="number" id="vehicleMPG" placeholder="e.g., 28" min="5" max="80" step="1" value="25">
+                        <p class="help-text">Your vehicle's miles per gallon</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gasPrice">Gas Price per Gallon</label>
+                        <input type="number" id="gasPrice" placeholder="e.g., 3.50" min="0" step="0.10" value="3.50">
+                        <p class="help-text">Current gas price in your area</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maintenanceCostPerMile">Maintenance Cost per Mile</label>
+                        <input type="number" id="maintenanceCostPerMile" placeholder="0.15" min="0" step="0.01" value="0.15">
+                        <p class="help-text">IRS estimate: $0.15/mile (oil changes, tires, brakes, repairs)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="depreciationPerMile">Depreciation per Mile</label>
+                        <input type="number" id="depreciationPerMile" placeholder="0.28" min="0" step="0.01" value="0.28">
+                        <p class="help-text">IRS estimate: $0.28/mile (your car loses value with every mile)</p>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>📱 Other Expenses</h3>
+
+                    <div class="form-group">
+                        <label for="phoneDataCost">Phone/Data Cost per Month</label>
+                        <input type="number" id="phoneDataCost" placeholder="e.g., 80" min="0" step="5" value="0">
+                        <p class="help-text">If using phone primarily for gig work (we'll prorate for work percentage)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insuranceIncrease">Insurance Increase per Month</label>
+                        <input type="number" id="insuranceIncrease" placeholder="e.g., 50" min="0" step="10" value="0">
+                        <p class="help-text">Extra cost for rideshare/delivery coverage</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parkingTolls">Parking/Tolls per Week</label>
+                        <input type="number" id="parkingTolls" placeholder="e.g., 20" min="0" step="5" value="0">
+                        <p class="help-text">Weekly parking, tolls, or fees</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otherExpenses">Other Weekly Expenses</label>
+                        <input type="number" id="otherExpenses" placeholder="e.g., 15" min="0" step="5" value="0">
+                        <p class="help-text">Hot bags, phone mounts, car washes, supplies, etc.</p>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>💵 Tax Information</h3>
+
+                    <div class="form-group">
+                        <label for="taxRate">Estimated Tax Rate (%)</label>
+                        <input type="number" id="taxRate" placeholder="e.g., 25" min="0" max="50" step="1" value="25">
+                        <p class="help-text">Self-employment tax (15.3%) + income tax (typically 10-15%). Default: 25%</p>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateTrueRate()">
+                    Calculate My True Hourly Rate
+                </button>
+            </div>
+
+            <!-- RESULTS TAB -->
+            <div id="resultsTab" class="tab-content">
+                <div id="resultsContent"></div>
+            </div>
+
+            <!-- LEARN TAB -->
+            <div id="learnTab" class="tab-content">
+                <div class="learn-content">
+                    <h3>📚 Why Your True Hourly Rate Matters</h3>
+                    
+                    <p>
+                        The number your gig app shows you is NOT what you're actually making. That's your gross earnings—before accounting for the very real costs of using your vehicle as a business tool.
+                    </p>
+
+                    <p>
+                        <strong>Most drivers drastically overestimate their earnings.</strong> They see "$25/hour" on the app and think they're doing great. But after gas, maintenance, depreciation, and taxes, they're often making minimum wage or less.
+                    </p>
+
+                    <h4>🚗 The Hidden Costs of Gig Driving</h4>
+
+                    <p><strong>1. Gas Costs</strong></p>
+                    <p>This is the most obvious cost, but drivers often underestimate it. At $3.50/gallon and 25 MPG, you're spending $0.14 per mile just on gas. If you drive 300 miles/week, that's $42/week or $168/month.</p>
+
+                    <p><strong>2. Vehicle Maintenance</strong></p>
+                    <p>The IRS estimates $0.15/mile for maintenance. This includes:</p>
+                    <ul>
+                        <li>Oil changes every 3,000-5,000 miles</li>
+                        <li>Tire replacements every 40,000-60,000 miles</li>
+                        <li>Brake pad replacements every 30,000-50,000 miles</li>
+                        <li>Transmission service, coolant flushes, etc.</li>
+                    </ul>
+                    <p>At 300 miles/week, that's $45/week or $180/month in maintenance costs.</p>
+
+                    <p><strong>3. Vehicle Depreciation</strong></p>
+                    <p>This is the cost most drivers ignore—and it's the biggest one. Every mile you drive reduces your vehicle's resale value. The IRS estimates $0.28/mile for depreciation.</p>
+                    <p>At 300 miles/week, that's $84/week or $336/month in lost vehicle value. This is real money—you'll feel it when you sell or trade in your car.</p>
+
+                    <p><strong>4. Taxes</strong></p>
+                    <p>As a self-employed gig worker, you owe:</p>
+                    <ul>
+                        <li><strong>Self-employment tax:</strong> 15.3% (Social Security + Medicare)</li>
+                        <li><strong>Income tax:</strong> 10-15% (depending on your tax bracket)</li>
+                        <li><strong>Total:</strong> 25-30% of net earnings</li>
+                    </ul>
+                    <p>Many drivers don't set aside money for taxes and get hit with a massive tax bill in April.</p>
+
+                    <p><strong>5. Insurance</strong></p>
+                    <p>If you're driving for rideshare (Uber/Lyft), you need rideshare insurance. For delivery (DoorDash/UberEats/Instacart), your personal insurance may not cover commercial use. Extra coverage costs $30-100/month.</p>
+
+                    <p><strong>6. Phone & Data</strong></p>
+                    <p>Running multiple apps drains your battery and uses significant data. If you're using your phone primarily for gig work, that's a business expense.</p>
+
+                    <h4>💡 The IRS Standard Mileage Rate</h4>
+
+                    <p>For 2024, the IRS standard mileage rate is <strong>$0.67/mile</strong>. This rate is designed to cover:</p>
+                    <ul>
+                        <li>Gas: ~$0.14/mile</li>
+                        <li>Maintenance: ~$0.15/mile</li>
+                        <li>Depreciation: ~$0.28/mile</li>
+                        <li>Insurance, registration, etc.: ~$0.10/mile</li>
+                    </ul>
+
+                    <p>At 300 miles/week, the IRS says it costs you <strong>$201/week ($804/month)</strong> to operate your vehicle.</p>
+
+                    <p><strong>This is why the standard mileage deduction exists:</strong> The IRS recognizes that driving for work has significant, real costs.</p>
+
+                    <h4>⚠️ The Depreciation Reality</h4>
+
+                    <p>Depreciation is the silent killer of gig driver profits. Here's why:</p>
+
+                    <p><strong>Example:</strong> You drive 300 miles/week for gig work (15,600 miles/year). At $0.28/mile depreciation:</p>
+                    <ul>
+                        <li>Year 1: $4,368 in depreciation</li>
+                        <li>Year 2: $4,368 in depreciation</li>
+                        <li>Year 3: $4,368 in depreciation</li>
+                        <li><strong>3-year total: $13,104 in lost vehicle value</strong></li>
+                    </ul>
+
+                    <p>If you bought a $20,000 car and drove it for gig work for 3 years, it might be worth only $6,896 when you sell it—not $15,000 like a car with normal mileage.</p>
+
+                    <p><strong>This is real money you're losing,</strong> even if you don't feel it until you sell the car.</p>
+
+                    <h4>🎯 What's a "Good" True Hourly Rate?</h4>
+
+                    <p>Here's a rough benchmark:</p>
+                    <ul>
+                        <li><strong>Below $10/hr:</strong> You're losing money. Stop immediately and reassess.</li>
+                        <li><strong>$10-15/hr:</strong> You're making minimum wage after costs. Optimize or find better gigs.</li>
+                        <li><strong>$15-20/hr:</strong> Decent earnings, but there's room for improvement.</li>
+                        <li><strong>$20-25/hr:</strong> Strong earnings. You're optimizing well.</li>
+                        <li><strong>$25+/hr:</strong> Excellent. You're in the top tier of gig drivers.</li>
+                    </ul>
+
+                    <h4>🚀 How to Increase Your True Hourly Rate</h4>
+
+                    <p><strong>1. Work Peak Times Only</strong></p>
+                    <p>Lunch rush (11am-1pm) and dinner rush (5-9pm) pay the most. Don't waste time during slow periods—your vehicle costs are the same whether you're busy or not.</p>
+
+                    <p><strong>2. Choose High-Paying Zones</strong></p>
+                    <p>Not all neighborhoods pay the same. Wealthy areas often have higher tips and better orders. Use Tool #4 to find your best zones.</p>
+
+                    <p><strong>3. Multi-App Strategy</strong></p>
+                    <p>Run DoorDash + UberEats + Instacart simultaneously to minimize downtime between orders.</p>
+
+                    <p><strong>4. Decline Low-Paying Orders</strong></p>
+                    <p>Accept only orders with good $/mile ratios. Don't chase $3 orders across town—you're losing money on gas and wear.</p>
+
+                    <p><strong>5. Reduce Dead Miles</strong></p>
+                    <p>Dead miles (driving without a delivery) kill profitability. Position yourself in busy zones, not far from restaurants.</p>
+
+                    <p><strong>6. Track and Optimize</strong></p>
+                    <p>Use this calculator weekly. If your true rate is dropping, something needs to change—better zones, better times, or a better platform.</p>
+
+                    <h4>💵 Tax Deduction Strategy</h4>
+
+                    <p>You can deduct either:</p>
+                    <ul>
+                        <li><strong>Standard Mileage:</strong> $0.67/mile (easiest, covers everything)</li>
+                        <li><strong>Actual Expenses:</strong> Gas, maintenance, depreciation, insurance (more complicated)</li>
+                    </ul>
+
+                    <p>For most drivers, standard mileage is simpler and often results in a bigger deduction.</p>
+
+                    <p><strong>Example:</strong> Drive 15,000 miles/year for gig work = $10,050 tax deduction. At 25% tax rate, that's $2,512.50 in tax savings.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (tabName === 'calculator') {
+                document.getElementById('calculatorTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+            } else if (tabName === 'results') {
+                document.getElementById('resultsTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+            } else if (tabName === 'learn') {
+                document.getElementById('learnTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function calculateTrueRate() {
+            // Get values
+            let grossEarnings = parseFloat(document.getElementById('grossEarnings').value) || 0;
+            const timePeriod = document.getElementById('timePeriod').value;
+            let activeHours = parseFloat(document.getElementById('activeHours').value) || 0;
+            let milesPerWeek = parseFloat(document.getElementById('milesPerWeek').value) || 0;
+            const vehicleMPG = parseFloat(document.getElementById('vehicleMPG').value) || 25;
+            const gasPrice = parseFloat(document.getElementById('gasPrice').value) || 3.50;
+            const maintenanceCostPerMile = parseFloat(document.getElementById('maintenanceCostPerMile').value) || 0.15;
+            const depreciationPerMile = parseFloat(document.getElementById('depreciationPerMile').value) || 0.28;
+            let phoneDataCost = parseFloat(document.getElementById('phoneDataCost').value) || 0;
+            let insuranceIncrease = parseFloat(document.getElementById('insuranceIncrease').value) || 0;
+            let parkingTolls = parseFloat(document.getElementById('parkingTolls').value) || 0;
+            let otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 25;
+
+            // Validation
+            if (grossEarnings === 0 || activeHours === 0 || milesPerWeek === 0) {
+                alert('Please fill in required fields: Gross Earnings, Active Hours, and Miles per Week');
+                return;
+            }
+
+            // Convert daily to weekly if needed
+            if (timePeriod === 'day') {
+                grossEarnings = grossEarnings * 7;
+                activeHours = activeHours * 7;
+            }
+
+            // Calculate costs
+            const gallonsUsed = milesPerWeek / vehicleMPG;
+            const gasCost = gallonsUsed * gasPrice;
+            const maintenanceCost = milesPerWeek * maintenanceCostPerMile;
+            const depreciationCost = milesPerWeek * depreciationPerMile;
+            
+            // Prorate monthly costs to weekly
+            const phoneDataCostWeekly = phoneDataCost / 4.33;
+            const insuranceIncreaseWeekly = insuranceIncrease / 4.33;
+            
+            const totalWeeklyCosts = gasCost + maintenanceCost + depreciationCost + phoneDataCostWeekly + insuranceIncreaseWeekly + parkingTolls + otherExpenses;
+            
+            // Calculate net before taxes
+            const netBeforeTaxes = grossEarnings - totalWeeklyCosts;
+            
+            // Calculate taxes
+            const taxesOwed = netBeforeTaxes * (taxRate / 100);
+            
+            // Calculate true net
+            const trueNetEarnings = netBeforeTaxes - taxesOwed;
+            
+            // Calculate hourly rates
+            const grossHourlyRate = grossEarnings / activeHours;
+            const trueHourlyRate = trueNetEarnings / activeHours;
+            
+            // Calculate percentage taken by costs
+            const percentLostToCosts = ((grossEarnings - trueNetEarnings) / grossEarnings) * 100;
+            
+            // IRS standard mileage comparison
+            const irsStandardMileageCost = milesPerWeek * 0.67;
+
+            // Generate results HTML
+            let resultsHTML = `
+                <div class="results-section">
+                    <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">
+                        💰 Your True Hourly Rate
+                    </h2>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card gross">
+                            <div class="comparison-label">What the App Shows</div>
+                            <div class="comparison-value">$${grossHourlyRate.toFixed(2)}/hr</div>
+                            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Gross hourly rate</p>
+                        </div>
+                        <div class="comparison-card net">
+                            <div class="comparison-label">What You Actually Make</div>
+                            <div class="comparison-value">$${trueHourlyRate.toFixed(2)}/hr</div>
+                            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">True hourly rate (after all costs)</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4>📊 Weekly Earnings Breakdown</h4>
+                        <div class="result-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Gross Weekly Earnings</span>
+                                <span class="breakdown-value">$${grossEarnings.toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Active Hours Worked</span>
+                                <span class="breakdown-value">${activeHours.toFixed(1)} hours</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Miles Driven</span>
+                                <span class="breakdown-value">${milesPerWeek.toFixed(0)} miles</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4>💸 Cost Breakdown (Weekly)</h4>
+                        <div class="result-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Gas (${gallonsUsed.toFixed(1)} gal @ $${gasPrice}/gal)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${gasCost.toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Maintenance ($${maintenanceCostPerMile}/mile)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${maintenanceCost.toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Depreciation ($${depreciationPerMile}/mile)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${depreciationCost.toFixed(2)}</span>
+                            </div>
+                            ${phoneDataCost > 0 ? `
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Phone/Data (prorated)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${phoneDataCostWeekly.toFixed(2)}</span>
+                            </div>` : ''}
+                            ${insuranceIncrease > 0 ? `
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Insurance Increase (prorated)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${insuranceIncreaseWeekly.toFixed(2)}</span>
+                            </div>` : ''}
+                            ${parkingTolls > 0 ? `
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Parking/Tolls</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${parkingTolls.toFixed(2)}</span>
+                            </div>` : ''}
+                            ${otherExpenses > 0 ? `
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Other Expenses</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${otherExpenses.toFixed(2)}</span>
+                            </div>` : ''}
+                            <div class="breakdown-item">
+                                <span class="breakdown-label"><strong>Total Weekly Costs</strong></span>
+                                <span class="breakdown-value" style="color: #e74c3c;"><strong>-$${totalWeeklyCosts.toFixed(2)}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4>📋 Net Earnings & Taxes</h4>
+                        <div class="result-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Net Before Taxes</span>
+                                <span class="breakdown-value">$${netBeforeTaxes.toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Taxes Owed (${taxRate}%)</span>
+                                <span class="breakdown-value" style="color: #e74c3c;">-$${taxesOwed.toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label"><strong>True Net Weekly Earnings</strong></span>
+                                <span class="breakdown-value" style="color: #27ae60;"><strong>$${trueNetEarnings.toFixed(2)}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4>📅 Monthly & Annual Projections</h4>
+                        <div class="result-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Gross Monthly Earnings</span>
+                                <span class="breakdown-value">$${(grossEarnings * 4.33).toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">True Net Monthly Earnings</span>
+                                <span class="breakdown-value" style="color: #27ae60;">$${(trueNetEarnings * 4.33).toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Gross Annual Earnings</span>
+                                <span class="breakdown-value">$${(grossEarnings * 52).toFixed(2)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">True Net Annual Earnings</span>
+                                <span class="breakdown-value" style="color: #27ae60;">$${(trueNetEarnings * 52).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>💡 Reality Check:</strong> You're losing ${percentLostToCosts.toFixed(1)}% of your gross earnings to costs and taxes. For every $100 you earn, you keep only $${(100 - percentLostToCosts).toFixed(2)}.
+                    </div>
+            `;
+
+            // Recommendations based on true hourly rate
+            if (trueHourlyRate < 10) {
+                resultsHTML += `
+                    <div class="recommendation-box">
+                        <h4>⚠️ Critical Alert: You're Losing Money</h4>
+                        <p><strong>Your true hourly rate is below $10/hour.</strong> This is not sustainable. Here's what you need to do:</p>
+                        <ul>
+                            <li><strong>STOP immediately</strong> and reassess whether gig driving makes financial sense</li>
+                            <li><strong>Switch platforms:</strong> Use Tool #3 to compare which app pays better in your market</li>
+                            <li><strong>Optimize zones/times:</strong> Use Tool #4 to find higher-paying areas and peak times</li>
+                            <li><strong>Consider vehicle switch:</strong> Your vehicle costs may be too high (see Tool #6)</li>
+                            <li><strong>Work only peak hours:</strong> Don't waste time during slow periods</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (trueHourlyRate >= 10 && trueHourlyRate < 15) {
+                resultsHTML += `
+                    <div class="recommendation-box">
+                        <h4>⚠️ Room for Improvement</h4>
+                        <p><strong>You're making minimum wage after costs.</strong> You can do better. Here's how:</p>
+                        <ul>
+                            <li><strong>Work peak times only:</strong> Lunch (11am-1pm) and dinner (5-9pm) pay 50-100% more</li>
+                            <li><strong>Optimize your zones:</strong> Use Tool #4 to identify higher-paying neighborhoods</li>
+                            <li><strong>Decline low orders:</strong> Don't accept $3-5 orders—they kill your hourly rate</li>
+                            <li><strong>Multi-app strategy:</strong> Run 2-3 apps simultaneously to reduce downtime</li>
+                            <li><strong>Track weekly:</strong> Monitor your rate and adjust if it drops</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (trueHourlyRate >= 15 && trueHourlyRate < 20) {
+                resultsHTML += `
+                    <div class="recommendation-box">
+                        <h4>✅ Decent Earnings - But You Can Optimize Further</h4>
+                        <p><strong>You're in the middle range.</strong> With some optimization, you could push to $20+/hour:</p>
+                        <ul>
+                            <li><strong>Focus on high-tip zones:</strong> Wealthy neighborhoods = better tips</li>
+                            <li><strong>Cherry-pick orders:</strong> Only accept $2/mile or better</li>
+                            <li><strong>Minimize dead miles:</strong> Position yourself strategically between hotspots</li>
+                            <li><strong>Track your best days/times:</strong> Double down on what's working</li>
+                            <li><strong>Consider vehicle efficiency:</strong> If driving a gas guzzler, calculate if hybrid/electric makes sense</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (trueHourlyRate >= 20 && trueHourlyRate < 25) {
+                resultsHTML += `
+                    <div class="recommendation-box">
+                        <h4>💪 Strong Earnings - Keep It Up!</h4>
+                        <p><strong>You're in the top tier of gig drivers.</strong> Here's how to maintain and improve:</p>
+                        <ul>
+                            <li><strong>Document your strategy:</strong> What zones, times, and platforms work best?</li>
+                            <li><strong>Protect your vehicle:</strong> Regular maintenance prevents costly breakdowns</li>
+                            <li><strong>Set aside 25-30% for taxes:</strong> Don't get hit with a surprise tax bill</li>
+                            <li><strong>Track quarterly:</strong> Make sure your rate stays consistent</li>
+                            <li><strong>Consider scaling:</strong> If in Budget Gap Mode, you're hitting your goal efficiently</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                resultsHTML += `
+                    <div class="recommendation-box">
+                        <h4>🏆 Excellent Earnings - You're Crushing It!</h4>
+                        <p><strong>$25+/hour true rate is exceptional.</strong> You're doing everything right:</p>
+                        <ul>
+                            <li><strong>Share your strategy:</strong> What's working for you could help other drivers</li>
+                            <li><strong>Maintain discipline:</strong> Don't get complacent—continue optimizing</li>
+                            <li><strong>Protect your asset:</strong> Your vehicle is making you money—take care of it</li>
+                            <li><strong>Plan for taxes:</strong> Set aside 30% of earnings for quarterly payments</li>
+                            <li><strong>Consider your next move:</strong> Are you in Max Earnings Mode short-term, or building long-term income?</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // IRS comparison
+            resultsHTML += `
+                <div class="result-card">
+                    <h4>📋 IRS Standard Mileage Comparison</h4>
+                    <p style="color: #666; margin-bottom: 15px;">
+                        The IRS standard mileage rate for 2024 is $0.67/mile. Here's how your actual costs compare:
+                    </p>
+                    <div class="result-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Your Actual Vehicle Costs (weekly)</span>
+                            <span class="breakdown-value">$${totalWeeklyCosts.toFixed(2)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">IRS Standard Mileage (${milesPerWeek} miles @ $0.67)</span>
+                            <span class="breakdown-value">$${irsStandardMileageCost.toFixed(2)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Difference</span>
+                            <span class="breakdown-value" style="color: ${totalWeeklyCosts < irsStandardMileageCost ? '#27ae60' : '#e74c3c'};">
+                                ${totalWeeklyCosts < irsStandardMileageCost ? '+' : ''}$${(irsStandardMileageCost - totalWeeklyCosts).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 0.9em; margin-top: 15px; font-style: italic;">
+                        For tax purposes, you can deduct either your actual expenses or the standard mileage rate—whichever is higher. Use Tool #5 to track deductions.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h4>🎯 Next Steps</h4>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Track weekly:</strong> Calculate your true rate every week to catch drops early</li>
+                        <li><strong>Compare platforms (Tool #3):</strong> See if DoorDash, UberEats, Instacart, or Uber/Lyft pays better</li>
+                        <li><strong>Optimize zones (Tool #4):</strong> Find your most profitable areas and time slots</li>
+                        <li><strong>Track taxes (Tool #5):</strong> Deduct expenses and calculate quarterly payments</li>
+                        <li><strong>Analyze vehicle (Tool #6):</strong> Determine if your vehicle is cost-effective for gig work</li>
+                    </ol>
+                </div>
+            `;
+
+            resultsHTML += `</div>`;
+
+            // Display results
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+
+            // Show and switch to Results tab
+            document.getElementById('resultsTabBtn').style.display = 'flex';
+            switchTab('results');
+        }
+    </script>
+</body>
+</html>

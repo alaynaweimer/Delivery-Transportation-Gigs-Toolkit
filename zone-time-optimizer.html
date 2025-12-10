@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zone & Time Optimizer | Delivery Driver Income Optimizer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6; color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            padding: 30px; text-align: center;
+        }
+        .header h1 { color: #2c3e50; font-size: 2.2em; margin-bottom: 10px; }
+        .brand { background: #2c3e50; color: white; padding: 12px; text-align: center; }
+        .nav-links {
+            background: #f8f9fa; padding: 15px; text-align: center; border-bottom: 2px solid #e0e0e0;
+        }
+        .nav-links a { color: #667eea; text-decoration: none; margin: 0 15px; font-weight: 600; }
+        .content { padding: 40px; }
+        .tab-navigation {
+            display: flex; gap: 10px; justify-content: center; margin: 30px 0; flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: white; color: #2c3e50; border: 2px solid #e0e0e0;
+            padding: 15px 30px; border-radius: 12px; cursor: pointer; font-weight: 600;
+            font-size: 1.05em; transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .tab-btn:hover { border-color: #F4A261; transform: translateY(-2px); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            border-color: #F4A261; color: #2c3e50;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .intro-text { font-size: 1.15em; color: #555; margin-bottom: 30px; line-height: 1.8; }
+        .form-section { background: #f8f9fa; padding: 30px; border-radius: 12px; margin: 25px 0; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;
+        }
+        .help-text { font-size: 0.9em; color: #666; margin-top: 5px; font-style: italic; }
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; padding: 18px 50px; font-size: 1.2em; font-weight: 700;
+            border-radius: 12px; cursor: pointer; display: block; margin: 30px auto;
+            transition: all 0.3s; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        .results-section {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+            border: 3px solid #667eea; border-radius: 15px; padding: 35px; margin: 30px 0;
+        }
+        .recommendation-box {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            color: #2c3e50; padding: 25px; border-radius: 12px; margin: 25px 0;
+        }
+        .recommendation-box h4 { font-size: 1.4em; margin-bottom: 15px; }
+        .learn-content { line-height: 1.8; }
+        .learn-content h3 { color: #667eea; font-size: 1.6em; margin: 30px 0 20px 0; }
+        .learn-content p { margin-bottom: 15px; color: #555; }
+        @media (max-width: 768px) { .content { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header"><h1>🗺️ Zone & Time Optimizer</h1></div>
+        <div class="brand">Discover Your Success with Alayna Marie</div>
+        <div class="nav-links"><a href="index.html">← Back to Home</a></div>
+        <div class="content">
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('calculator')">
+                    <span style="font-size: 1.3em;">🧮</span><span>Planner</span>
+                </button>
+                <button class="tab-btn" id="resultsTabBtn" onclick="switchTab('results')" style="display: none;">
+                    <span style="font-size: 1.3em;">📊</span><span>Strategy</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('learn')">
+                    <span style="font-size: 1.3em;">📚</span><span>Learn</span>
+                </button>
+            </div>
+            <div id="calculatorTab" class="tab-content active">
+                <p class="intro-text">
+                    <strong>Where and when you work matters more than how many hours you work.</strong> Track your best-performing zones and time slots to maximize earnings per hour.
+                </p>
+                <div class="form-section">
+                    <h3>📍 Track Your Best Zones & Times</h3>
+                    <div class="form-group">
+                        <label>Zone/Neighborhood</label>
+                        <input type="text" id="zone1" placeholder="e.g., Downtown, University District">
+                    </div>
+                    <div class="form-group">
+                        <label>Average Hourly Earnings</label>
+                        <input type="number" id="zone1Earnings" placeholder="e.g., 25">
+                    </div>
+                    <div class="form-group">
+                        <label>Best Time Slot</label>
+                        <select id="zone1Time">
+                            <option>Breakfast (7-10am)</option>
+                            <option selected>Lunch (11am-1pm)</option>
+                            <option>Afternoon (2-5pm)</option>
+                            <option>Dinner (5-9pm)</option>
+                            <option>Late Night (9pm-12am)</option>
+                        </select>
+                    </div>
+                    <button class="calculate-btn" onclick="analyzeZones()">Analyze Best Strategy</button>
+                </div>
+            </div>
+            <div id="resultsTab" class="tab-content"><div id="resultsContent"></div></div>
+            <div id="learnTab" class="tab-content">
+                <div class="learn-content">
+                    <h3>📚 Why Zone & Time Optimization Matters</h3>
+                    <p><strong>Not all zones pay equally.</strong> Wealthy neighborhoods = higher tips. University areas = high volume but lower tips. Industrial zones = few orders.</p>
+                    <p><strong>Peak times vary by platform:</strong></p>
+                    <p>🍕 <strong>Food Delivery:</strong> Lunch (11am-1pm), Dinner (5-9pm), Late night weekends (9pm-12am)</p>
+                    <p>🛒 <strong>Grocery Delivery:</strong> Weekend mornings (8am-12pm), Sunday afternoons</p>
+                    <p>📦 <strong>Package Delivery:</strong> Consistent throughout day (Amazon Flex blocks)</p>
+                    <p>🚗 <strong>Rideshare:</strong> Morning commute (7-9am), evening (5-8pm), weekend nights (9pm-2am)</p>
+                    <p><strong>Strategy:</strong> Work only your most profitable zones during peak times. Don't waste hours during slow periods.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function analyzeZones() {
+            const zone = document.getElementById('zone1').value || 'Your tracked zone';
+            const earnings = document.getElementById('zone1Earnings').value || '25';
+            const time = document.getElementById('zone1Time').value;
+            document.getElementById('resultsContent').innerHTML = `
+                <div class="results-section">
+                    <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">🎯 Your Optimization Strategy</h2>
+                    <div class="recommendation-box">
+                        <h4>🏆 Best Strategy</h4>
+                        <p><strong>Zone:</strong> ${zone}</p>
+                        <p><strong>Best Time:</strong> ${time}</p>
+                        <p><strong>Hourly Rate:</strong> $${earnings}/hour</p>
+                        <ul style="margin: 20px 0 0 20px; line-height: 1.8;">
+                            <li>Focus on this zone during ${time} for maximum earnings</li>
+                            <li>Position yourself near restaurant clusters 10 minutes before peak</li>
+                            <li>Track multiple zones and compare weekly performance</li>
+                            <li>Decline orders that take you to low-paying zones</li>
+                            <li>Use multi-app strategy to stay busy during peak times</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultsTabBtn').style.display = 'flex';
+            switchTab('results');
+        }
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (tabName === 'calculator') {
+                document.getElementById('calculatorTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+            } else if (tabName === 'results') {
+                document.getElementById('resultsTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+            } else if (tabName === 'learn') {
+                document.getElementById('learnTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

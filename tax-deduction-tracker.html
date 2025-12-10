@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Deduction Tracker | Delivery Driver Income Optimizer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6; color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            padding: 30px; text-align: center;
+        }
+        .header h1 { color: #2c3e50; font-size: 2.2em; margin-bottom: 10px; }
+        .brand { background: #2c3e50; color: white; padding: 12px; text-align: center; }
+        .nav-links {
+            background: #f8f9fa; padding: 15px; text-align: center; border-bottom: 2px solid #e0e0e0;
+        }
+        .nav-links a { color: #667eea; text-decoration: none; margin: 0 15px; font-weight: 600; }
+        .content { padding: 40px; }
+        .tab-navigation {
+            display: flex; gap: 10px; justify-content: center; margin: 30px 0; flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: white; color: #2c3e50; border: 2px solid #e0e0e0;
+            padding: 15px 30px; border-radius: 12px; cursor: pointer; font-weight: 600;
+            font-size: 1.05em; transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .tab-btn:hover { border-color: #F4A261; transform: translateY(-2px); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            border-color: #F4A261; color: #2c3e50;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .intro-text { font-size: 1.15em; color: #555; margin-bottom: 30px; line-height: 1.8; }
+        .form-section { background: #f8f9fa; padding: 30px; border-radius: 12px; margin: 25px 0; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .form-group input {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;
+        }
+        .help-text { font-size: 0.9em; color: #666; margin-top: 5px; font-style: italic; }
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; padding: 18px 50px; font-size: 1.2em; font-weight: 700;
+            border-radius: 12px; cursor: pointer; display: block; margin: 30px auto;
+            transition: all 0.3s; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        .results-section {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+            border: 3px solid #667eea; border-radius: 15px; padding: 35px; margin: 30px 0;
+        }
+        .result-card {
+            background: white; border-left: 5px solid #667eea; padding: 25px; margin: 20px 0;
+            border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .result-value { font-size: 2.5em; font-weight: 700; color: #27ae60; margin: 15px 0; }
+        .recommendation-box {
+            background: linear-gradient(135deg, #FFD93D 0%, #F4A261 100%);
+            color: #2c3e50; padding: 25px; border-radius: 12px; margin: 25px 0;
+        }
+        .learn-content { line-height: 1.8; }
+        .learn-content h3 { color: #667eea; font-size: 1.6em; margin: 30px 0 20px 0; }
+        .learn-content p { margin-bottom: 15px; color: #555; }
+        .learn-content ul { margin: 15px 0 15px 30px; }
+        @media (max-width: 768px) { .content { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header"><h1>📝 Tax Deduction Tracker</h1></div>
+        <div class="brand">Discover Your Success with Alayna Marie</div>
+        <div class="nav-links"><a href="index.html">← Back to Home</a></div>
+        <div class="content">
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('calculator')">
+                    <span style="font-size: 1.3em;">🧮</span><span>Tracker</span>
+                </button>
+                <button class="tab-btn" id="resultsTabBtn" onclick="switchTab('results')" style="display: none;">
+                    <span style="font-size: 1.3em;">📊</span><span>Tax Summary</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('learn')">
+                    <span style="font-size: 1.3em;">📚</span><span>Learn</span>
+                </button>
+            </div>
+            <div id="calculatorTab" class="tab-content active">
+                <p class="intro-text">
+                    <strong>Gig drivers pay 25-30% in taxes but can deduct thousands in expenses.</strong> Track deductions to minimize your tax burden and calculate quarterly payments.
+                </p>
+                <div class="form-section">
+                    <h3>💰 Your Annual Gig Income</h3>
+                    <div class="form-group">
+                        <label>Total Gross Earnings (Annual)</label>
+                        <input type="number" id="grossIncome" placeholder="e.g., 30000">
+                        <p class="help-text">Total earnings from all gig platforms this year</p>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>🚗 Deductible Expenses</h3>
+                    <div class="form-group">
+                        <label>Total Business Miles Driven</label>
+                        <input type="number" id="businessMiles" placeholder="e.g., 15000">
+                        <p class="help-text">Total miles driven for gig work (standard mileage: $0.67/mile)</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone/Data Costs (Annual)</label>
+                        <input type="number" id="phoneCosts" placeholder="e.g., 960" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Car Washes/Supplies (Annual)</label>
+                        <input type="number" id="supplies" placeholder="e.g., 500" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Parking/Tolls (Annual)</label>
+                        <input type="number" id="parking" placeholder="e.g., 300" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Other Deductible Expenses</label>
+                        <input type="number" id="otherExpenses" placeholder="e.g., 200" value="0">
+                        <p class="help-text">Roadside assistance, equipment, etc.</p>
+                    </div>
+                    <button class="calculate-btn" onclick="calculateTaxes()">Calculate Tax Savings</button>
+                </div>
+            </div>
+            <div id="resultsTab" class="tab-content"><div id="resultsContent"></div></div>
+            <div id="learnTab" class="tab-content">
+                <div class="learn-content">
+                    <h3>📚 Tax Deduction Guide for Gig Drivers</h3>
+                    <p><strong>As a self-employed gig worker, you owe:</strong></p>
+                    <ul>
+                        <li>Self-employment tax: 15.3% (Social Security + Medicare)</li>
+                        <li>Income tax: 10-15% (federal, depending on bracket)</li>
+                        <li>Total: 25-30% of net income</li>
+                    </ul>
+                    <p><strong>Standard Mileage Deduction (Easiest):</strong></p>
+                    <p>Deduct $0.67/mile for 2024. This covers gas, maintenance, depreciation, insurance. Track every business mile!</p>
+                    <p><strong>Example:</strong> Drive 15,000 miles = $10,050 deduction. At 25% tax rate = $2,512 tax savings.</p>
+                    <p><strong>Other Deductible Expenses:</strong></p>
+                    <ul>
+                        <li>Phone/data plan (prorated for business use %)</li>
+                        <li>Car washes, cleaning supplies</li>
+                        <li>Hot bags, phone mounts, dash cams</li>
+                        <li>Parking, tolls, fees</li>
+                        <li>Roadside assistance membership</li>
+                    </ul>
+                    <p><strong>Quarterly Tax Payments:</strong></p>
+                    <p>Pay estimated taxes quarterly (April, June, Sept, Jan) to avoid penalties. Set aside 25-30% of net earnings.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function calculateTaxes() {
+            const grossIncome = parseFloat(document.getElementById('grossIncome').value) || 0;
+            const businessMiles = parseFloat(document.getElementById('businessMiles').value) || 0;
+            const phoneCosts = parseFloat(document.getElementById('phoneCosts').value) || 0;
+            const supplies = parseFloat(document.getElementById('supplies').value) || 0;
+            const parking = parseFloat(document.getElementById('parking').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+            if (grossIncome === 0) {
+                alert('Please enter your gross income');
+                return;
+            }
+            const standardMileageDeduction = businessMiles * 0.67;
+            const otherDeductions = phoneCosts + supplies + parking + otherExpenses;
+            const totalDeductions = standardMileageDeduction + otherDeductions;
+            const taxableIncome = grossIncome - totalDeductions;
+            const taxRate = 0.25;
+            const taxesOwed = taxableIncome * taxRate;
+            const taxSavings = totalDeductions * taxRate;
+            const quarterlyPayment = taxesOwed / 4;
+            document.getElementById('resultsContent').innerHTML = `
+                <div class="results-section">
+                    <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">📊 Your Tax Summary</h2>
+                    <div class="result-card">
+                        <h4 style="color: #667eea; font-size: 1.3em; margin-bottom: 15px;">💰 Tax Savings from Deductions</h4>
+                        <div class="result-value">$${taxSavings.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
+                        <p style="color: #666;">Amount you're saving by deducting business expenses</p>
+                    </div>
+                    <div class="result-card">
+                        <h4 style="color: #667eea; font-size: 1.3em; margin-bottom: 15px;">📋 Deduction Breakdown</h4>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                                <span>Standard Mileage (${businessMiles.toLocaleString()} miles @ $0.67)</span>
+                                <strong>$${standardMileageDeduction.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>
+                            ${otherDeductions > 0 ? `
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                                <span>Other Deductible Expenses</span>
+                                <strong>$${otherDeductions.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>` : ''}
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 1.1em;">
+                                <span><strong>Total Deductions</strong></span>
+                                <strong style="color: #27ae60;">$${totalDeductions.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <h4 style="color: #667eea; font-size: 1.3em; margin-bottom: 15px;">💵 Tax Calculation</h4>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                                <span>Gross Income</span>
+                                <strong>$${grossIncome.toLocaleString()}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                                <span>Total Deductions</span>
+                                <strong style="color: #27ae60;">-$${totalDeductions.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                                <span>Taxable Income</span>
+                                <strong>$${taxableIncome.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 1.1em;">
+                                <span><strong>Estimated Taxes Owed (25%)</strong></span>
+                                <strong style="color: #e74c3c;">$${taxesOwed.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recommendation-box">
+                        <h4>📅 Quarterly Tax Payment Plan</h4>
+                        <p><strong>Set aside $${quarterlyPayment.toLocaleString(undefined, {maximumFractionDigits: 2})} per quarter</strong></p>
+                        <p style="margin-top: 15px;">Payment deadlines:</p>
+                        <ul style="margin: 15px 0 0 20px; line-height: 1.8;">
+                            <li>Q1 (Jan-Mar): Due April 15</li>
+                            <li>Q2 (Apr-May): Due June 15</li>
+                            <li>Q3 (Jun-Aug): Due September 15</li>
+                            <li>Q4 (Sep-Dec): Due January 15 (next year)</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic;">💡 Pro tip: Open a separate savings account and transfer 25-30% of each week's earnings for taxes.</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultsTabBtn').style.display = 'flex';
+            switchTab('results');
+        }
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (tabName === 'calculator') {
+                document.getElementById('calculatorTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+            } else if (tabName === 'results') {
+                document.getElementById('resultsTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+            } else if (tabName === 'learn') {
+                document.getElementById('learnTab').classList.add('active');
+                document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
